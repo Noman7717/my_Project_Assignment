@@ -8,7 +8,11 @@ class ApiScreen extends StatefulWidget {
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  late Adhan _adhan;
+  late Adhan _adhan = Adhan(
+    code: 0,
+    status: '',
+    data: [],
+  ); // Initialize _adhan with default values
   final ApiService apiService = ApiService();
 
   @override
@@ -19,12 +23,19 @@ class _ApiScreenState extends State<ApiScreen> {
 
   Future<void> _fetchPrayerTimings() async {
     try {
-      final response = await apiService.getPrayerTimings(2017, 4, 51.508515, -0.1254872);
+      final response = await apiService.getPrayerTimings(2024, 2, 51.508515, -0.1254872);
       setState(() {
         _adhan = response;
       });
     } catch (e) {
       print('Error: $e');
+      // Display a SnackBar or AlertDialog to inform the user about the error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to fetch data. Please check your internet connection.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -45,7 +56,7 @@ class _ApiScreenState extends State<ApiScreen> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Prayer Timings for ${_adhan.data[0].date.readable}',
+                'Prayer Timings for ${_adhan.data.isNotEmpty ? _adhan.data[0].date.readable : ''}',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -57,7 +68,7 @@ class _ApiScreenState extends State<ApiScreen> {
                 final prayerTimings = _adhan.data[index].timings;
 
                 return Card(
-                  color: Colors.yellow[200], // Yellow card color
+                  color: Colors.yellow[200],
                   child: ListTile(
                     title: Text(_adhan.data[index].date.readable),
                     subtitle: Column(
@@ -78,7 +89,10 @@ class _ApiScreenState extends State<ApiScreen> {
         ],
       )
           : Center(
-        child: CircularProgressIndicator(),
+        child: Text(
+          'Failed to fetch data. Please try again later.',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

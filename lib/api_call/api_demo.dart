@@ -15,16 +15,12 @@ class _ApiDemoPageState extends State<ApiDemoPage> {
   @override
   void initState() {
     super.initState();
-    // Show the loading page for 3 seconds before fetching data
-    Future.delayed(Duration(seconds: 3), () {
-      fetchData();
-    });
   }
 
   Future<void> fetchData() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://api.aladhan.com/v1/calendar/2017/4?latitude=51.508515&longitude=-0.1254872&method=2'));
+          'http://api.aladhan.com/v1/calendar/2024/4?latitude=51.508515&longitude=-0.1254872&method=2'));
       if (response.statusCode == 200) {
         setState(() {
           responseData = json.decode(response.body);

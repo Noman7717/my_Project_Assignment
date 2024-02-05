@@ -1,10 +1,28 @@
 import 'package:api_call/sqflite_db/main.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'api_call/ApiScreen.dart';
 import 'hive_db/main.dart';
-
 class MainScreen extends StatelessWidget {
+  ListTile buildListTile(BuildContext context, String buttonText, Widget destination) {
+    return ListTile(
+      title: Container(
+        height: 50, // Set a fixed height for all ListTiles
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => destination),
+            );
+          },
+          child: Text(buttonText),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.yellow[300],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,44 +37,9 @@ class MainScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ApiScreen()),
-                );
-              },
-              child: Text('Go to API Screen'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.yellow[300], // Set your desired color
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Hivedb()),
-                );
-              },
-              child: Text('Go to Hive Database'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.yellow[300], // Set your desired color
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => sqfdatabase()),
-                );
-              },
-              child: Text('Go to Sqflite Database'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.yellow[300], // Set your desired color
-              ),
-            ),
+            buildListTile(context, 'Go to API Screen', ApiScreen()),
+            buildListTile(context, 'Go to Hive Database', Hivedb()),
+            buildListTile(context, 'Go to Sqflite Database', sqfdatabase()),
           ],
         ),
       ),

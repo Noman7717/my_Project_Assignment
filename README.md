@@ -1,6 +1,6 @@
-# api_call
+# Assignment 
 
-A new Flutter project.
+# A project where i used API Call, Hive and Sqflite database.
 
 ## Getting Started
 
